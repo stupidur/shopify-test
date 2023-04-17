@@ -20,8 +20,8 @@ jobs:
       - name: Deploy
         env:
           # Store URL, like your-store.myshopify.com
-          SHOPIFY_FLAG_STORE: stupidur.myshopify.com
+          SHOPIFY_FLAG_STORE: '${{ secrets.SHOPIFY_STORE }}'
           # Password generated from Theme Access app
-          SHOPIFY_CLI_THEME_TOKEN: shptka_d45ae7b20902f0b76541cb073f041a4d
-          SHOPIFY_CLI_TTY: 0
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+          # SHOPIFY_CLI_TTY: 0
         run: shopify theme push --path ./ --theme 148342735157
