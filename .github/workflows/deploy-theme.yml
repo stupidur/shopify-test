@@ -57,7 +57,7 @@ jobs:
           # Password generated from Theme Access app
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
           SHOPIFY_CLI_TTY: 0
-        run: SHOPIFY_CLI_BUNDLED_THEME_CLI=1 shopify theme push --theme="shopify-test/${{ env.branch }}" --verbose > ./push_output.txt
+        run: SHOPIFY_CLI_BUNDLED_THEME_CLI=1 shopify theme push --theme="shopify-test/${{ env.branch }}" --verbose
       - name: Get Theme ID
         run: echo "theme_id=$(grep -Po -m 1 "(?<=\/unstable\/themes\/).+(?=\/assets)" ./push_output.txt)" >> $GITHUB_ENV
       - name: Add preview link
