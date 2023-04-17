@@ -1,42 +1,11 @@
-# name: Theme deploy
+name: Theme deploy
 
-# on: [push]
-
-# jobs:
-#   deploy:
-#     name: Deploy
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v1
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: 18
-#       - uses: ruby/setup-ruby@v1
-#         with:
-#           ruby-version: 3.1
-#           bundler: 'latest'
-#       - name: Install Shopify CLI
-#         run: npm install -g @shopify/cli @shopify/theme
-#       - name: Deploy
-#         env:
-#           # Store URL, like your-store.myshopify.com
-#           SHOPIFY_FLAG_STORE: '${{ secrets.SHOPIFY_STORE }}'
-#           # Password generated from Theme Access app
-#           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
-#           SHOPIFY_CLI_TTY: 0
-#         run: shopify theme push --path ./ --theme 148342735157 --verbose
-
-name: Dev Deployment
 on: [push]
-
-env:
-  # Store URL, like your-store.myshopify.com
-  SHOPIFY_FLAG_STORE: 'stupidur.myshopify.com'
 
 jobs:
   deploy:
+    name: Deploy
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v3
@@ -48,17 +17,11 @@ jobs:
           bundler: 'latest'
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli @shopify/theme
-      - name: Get Branch Name
-        run: export BRANCH=$(echo "${{ github.ref }}" | sed "s/refs\/heads\///") && echo "branch=$BRANCH" >> $GITHUB_ENV
       - name: Deploy
-        # Enable TTY to workaround Shopify CLI error
-        shell: 'script -q -e -c "bash {0}"'
         env:
+          # Store URL, like your-store.myshopify.com
+          SHOPIFY_FLAG_STORE: '${{ secrets.SHOPIFY_STORE }}'
           # Password generated from Theme Access app
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
           SHOPIFY_CLI_TTY: 0
-        run: SHOPIFY_CLI_BUNDLED_THEME_CLI=1 shopify theme push --theme="shopify-test/${{ env.branch }}" --verbose
-      - name: Get Theme ID
-        run: echo "theme_id=$(grep -Po -m 1 "(?<=\/unstable\/themes\/).+(?=\/assets)" ./push_output.txt)" >> $GITHUB_ENV
-      - name: Add preview link
-        run: echo '::notice title=Preview Link::https://stupidur.myshopify.com/?preview_theme_id=${{ env.theme_id }}'
+        run: shopify theme push --path ./ --theme 148342735157 --verbose
