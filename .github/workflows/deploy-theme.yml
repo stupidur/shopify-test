@@ -5,7 +5,7 @@ on: [push]
 jobs:
   deploy:
     name: Deploy
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v3
@@ -17,6 +17,8 @@ jobs:
           bundler: 'latest'
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli @shopify/theme
+      - name: TestCurl
+        run: curl -sSL https://theme-kit-access.shopifyapps.com/cli/admin/api/unstable/themes.json
       - name: Deploy
         env:
           # Store URL, like your-store.myshopify.com
