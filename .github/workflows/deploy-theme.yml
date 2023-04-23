@@ -5,7 +5,7 @@ on: [push]
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v3
@@ -16,7 +16,7 @@ jobs:
           ruby-version: 3.1
           bundler: 'latest'
       - name: Install Shopify CLI
-        run: npm install -g @shopify/cli @shopify/theme @shopify/theme-code-tools
+        run: npm install -g @shopify/cli @shopify/theme
       - name: Deploy
         env:
           # Store URL, like your-store.myshopify.com
